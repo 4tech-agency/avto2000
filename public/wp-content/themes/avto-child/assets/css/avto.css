@@ -1,0 +1,115 @@
+/*
+ * Avto 2000 — adapter CSS.
+ * Only what Elementor's widget settings cannot express. Every rule says why.
+ * Colours come from the kit's global colours (--e-global-color-*), never hex.
+ */
+
+/* 1. Prices, specs and hours line up in columns: tabular figures site-wide. */
+body { font-variant-numeric: tabular-nums; }
+
+/* 2. Visible keyboard focus on everything interactive. Elementor ships none for
+ *    buttons and nav links. 3px ink ring + 2px offset reads on white, the pale
+ *    bg and the yellow sticker alike; on the dark band it flips to the accent. */
+a:focus-visible,
+.elementor-button:focus-visible,
+button:focus-visible {
+	outline: 3px solid var(--e-global-color-primary);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+.av-dark a:focus-visible,
+.av-dark .elementor-button:focus-visible {
+	outline-color: var(--e-global-color-accent);
+}
+
+/* 3. The spec table inside each car card (Text Editor widget). A table, because
+ *    it IS label/value data; a widget has no two-column key/value control. */
+.av-spec table {
+	width: 100%;
+	margin: 0;
+	border: 0;
+	border-collapse: collapse;
+	font-size: 0.9375rem;
+	line-height: 1.4;
+}
+.av-spec th,
+.av-spec td {
+	padding: 8px 0;
+	border: 0;
+	border-top: 1px solid var(--e-global-color-line);
+	background: transparent;
+	text-align: left;
+	vertical-align: top;
+}
+.av-spec th { font-weight: 400; color: var(--e-global-color-secondary); width: 45%; }
+.av-spec td { font-weight: 600; color: var(--e-global-color-text); }
+/* Hello's reset stripes table rows and adds hover backgrounds */
+.av-spec tbody > tr:nth-child(odd) > td,
+.av-spec tbody > tr:nth-child(odd) > th,
+.av-spec tbody tr:hover > td,
+.av-spec tbody tr:hover > th { background: transparent; }
+
+/* 4. Opening hours on the contact page reuse the spec table look. */
+.av-hours table { max-width: 360px; }
+
+/* 5. Text Editor paragraphs: the last one carries no bottom margin, so the
+ *    container gap alone sets the rhythm (no double spacing). */
+.elementor-widget-text-editor p:last-child { margin-bottom: 0; }
+
+/* 6. Header: a hairline under the sticky bar so it separates from the page. */
+.av-header { border-bottom: 1px solid var(--e-global-color-line); }
+
+/* 7. Nav dropdown on mobile: full-width panel under the bar (the widget's
+ *    dropdown is in normal flow otherwise and pushes the bar taller). */
+@media (max-width: 1024px) {
+	.av-header .elementor-widget-nav-menu { position: static; }
+	.av-header nav.elementor-nav-menu--dropdown {
+		/* !important: the widget's "stretch" script writes inline top/left/width
+		 * measured from the toggle (43px), which leaves a gap under the 64px bar */
+		position: absolute; left: 0 !important; right: 0; width: 100% !important;
+		top: 100% !important; margin-top: 0 !important;
+		border-bottom: 1px solid var(--e-global-color-line);
+	}
+}
+
+/* 8. Reduced motion: every hover transition becomes an instant state change. */
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
+}
+
+/* 9. Links on the dark band and footer: the kit link colour is ink, which is
+ *    invisible on ink. Inherit the surrounding text colour; underline marks them. */
+.av-dark .elementor-widget-text-editor a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+/* 10. Contact Form 7 has no Elementor style controls, so its look lives here,
+ *     matched to the Elementor form beside it (15px/600 labels, 44px+ fields,
+ *     6px radius, muted border, ink button). CF7 wraps each label in a <p>. */
+.av-cf7 p { margin: 0 0 18px; }
+.av-cf7 p:has(.av-cf7-submit) { margin-bottom: 0; }
+.av-cf7 label { display: block; font-size: 15px; font-weight: 600; color: var(--e-global-color-primary); }
+.av-cf7 .wpcf7-form-control-wrap { display: block; margin-top: 6px; }
+.av-cf7 input:not([type=submit]),
+.av-cf7 select,
+.av-cf7 textarea {
+	width: 100%; min-height: 47px; padding: 10px 14px;
+	font: inherit; font-size: 16px; font-weight: 400; color: var(--e-global-color-primary);
+	background: var(--e-global-color-surface);
+	border: 1px solid var(--e-global-color-secondary); border-radius: 6px;
+}
+.av-cf7 textarea { min-height: 120px; resize: vertical; }
+.av-cf7 input:focus-visible, .av-cf7 select:focus-visible, .av-cf7 textarea:focus-visible,
+.elementor-field-group .elementor-field:focus-visible {
+	outline: 3px solid var(--e-global-color-primary); outline-offset: 1px;
+}
+.av-cf7 .av-cf7-submit {
+	width: 100%; min-height: 48px; padding: 13px 22px; cursor: pointer;
+	font: inherit; font-size: 16px; font-weight: 600;
+	color: var(--e-global-color-surface); background: var(--e-global-color-primary);
+	border: 0; border-radius: 6px; transition: background-color 180ms ease-out;
+}
+/* Hello's reset turns every [type=submit] magenta on hover; restore ours */
+.av-cf7 .av-cf7-submit:hover, .av-cf7 .av-cf7-submit:focus { background: var(--e-global-color-secondary); color: var(--e-global-color-surface); }
+.av-cf7 .wpcf7-spinner { margin: 8px 0 0; }
+.av-cf7 .wpcf7-not-valid { border-color: #B42318; }
+.av-cf7 .wpcf7-not-valid-tip { margin-top: 6px; font-size: 14px; font-weight: 600; color: #B42318; }
+.av-cf7 .wpcf7-response-output { margin: 16px 0 0 !important; padding: 12px 14px !important; border-radius: 6px; font-size: 15px; }

@@ -1,0 +1,14 @@
+# NEVER commit server credentials or keys
+ssh/
+*.pem
+*-dev
+*-dev.pub
+ssh-info.txt
+
+node_modules/
+.wrangler/
+.dev.vars
+.DS_Store
+
+# original 2–3 MB generator PNGs; the site uses the WebP/SVG exports
+assets/img/*.png

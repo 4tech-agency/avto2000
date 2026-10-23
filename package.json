@@ -1,0 +1,17 @@
+{
+  "name": "avto2000-cf",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "export": "node scripts/export.mjs --site https://avto2000.com",
+    "dev": "env -u CLOUDFLARE_API_TOKEN -u CLOUDFLARE_ACCOUNT_ID wrangler dev",
+    "deploy": "env -u CLOUDFLARE_API_TOKEN -u CLOUDFLARE_ACCOUNT_ID wrangler deploy",
+    "publish": "npm run export && env -u CLOUDFLARE_API_TOKEN -u CLOUDFLARE_ACCOUNT_ID wrangler deploy",
+    "whoami": "env -u CLOUDFLARE_API_TOKEN -u CLOUDFLARE_ACCOUNT_ID wrangler whoami",
+    "logs": "env -u CLOUDFLARE_API_TOKEN -u CLOUDFLARE_ACCOUNT_ID wrangler tail"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  },
+  "//": "wrangler runs with CLOUDFLARE_API_TOKEN unset: the shell's token belongs to another account (Beloved). This project uses the OAuth login for account 522efa6a\u2026"
+}

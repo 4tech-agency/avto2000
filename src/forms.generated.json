@@ -1,0 +1,357 @@
+{
+	"site": {
+		"title": "Avto 2000",
+		"public": false
+	},
+	"cf7": {
+		"70": {
+			"title": "Contact form 1",
+			"tags": [
+				{
+					"name": "your-name",
+					"basetype": "text",
+					"required": true,
+					"values": [],
+					"include_blank": false
+				},
+				{
+					"name": "your-email",
+					"basetype": "email",
+					"required": true,
+					"values": [],
+					"include_blank": false
+				},
+				{
+					"name": "your-subject",
+					"basetype": "text",
+					"required": true,
+					"values": [],
+					"include_blank": false
+				},
+				{
+					"name": "your-message",
+					"basetype": "textarea",
+					"required": false,
+					"values": [],
+					"include_blank": false
+				}
+			],
+			"messages": {
+				"mail_sent_ok": "Thank you for your message. It has been sent.",
+				"mail_sent_ng": "There was an error trying to send your message. Please try again later.",
+				"validation_error": "One or more fields have an error. Please check and try again.",
+				"spam": "There was an error trying to send your message. Please try again later.",
+				"accept_terms": "You must accept the terms and conditions before sending your message.",
+				"invalid_required": "Please fill out this field.",
+				"invalid_too_long": "This field has a too long input.",
+				"invalid_too_short": "This field has a too short input.",
+				"upload_failed": "There was an unknown error uploading the file.",
+				"upload_file_type_invalid": "You are not allowed to upload files of this type.",
+				"upload_file_too_large": "The uploaded file is too large.",
+				"upload_failed_php_error": "There was an error uploading the file.",
+				"invalid_date": "Please enter a date in YYYY-MM-DD format.",
+				"date_too_early": "This field has a too early date.",
+				"date_too_late": "This field has a too late date.",
+				"invalid_number": "Please enter a number.",
+				"number_too_small": "This field has a too small number.",
+				"number_too_large": "This field has a too large number.",
+				"quiz_answer_not_correct": "The answer to the quiz is incorrect.",
+				"captcha_not_match": "Your entered code is incorrect.",
+				"invalid_email": "Please enter an email address.",
+				"invalid_url": "Please enter a URL.",
+				"invalid_tel": "Please enter a telephone number."
+			},
+			"mail": {
+				"subject": "[_site_title] \"[your-subject]\"",
+				"sender": "[_site_title] <wordpress@avto2000-elementor.test>",
+				"body": "From: [your-name] [your-email]\nSubject: [your-subject]\n\nMessage Body:\n[your-message]\n\n-- \nThis is a notification that a contact form was submitted on your website ([_site_title] [_site_url]).",
+				"recipient": "[_site_admin_email]",
+				"additional_headers": "Reply-To: [your-email]",
+				"attachments": "",
+				"use_html": 0,
+				"exclude_blank": 0
+			},
+			"schema": {
+				"version": "SWV Core 2026-09-20",
+				"locale": "en_US",
+				"rules": [
+					{
+						"rule": "required",
+						"field": "your-name",
+						"error": "Please fill out this field."
+					},
+					{
+						"rule": "maxlength",
+						"field": "your-name",
+						"error": "This field has a too long input.",
+						"threshold": "400"
+					},
+					{
+						"rule": "required",
+						"field": "your-email",
+						"error": "Please fill out this field."
+					},
+					{
+						"rule": "email",
+						"field": "your-email",
+						"error": "Please enter an email address."
+					},
+					{
+						"rule": "maxlength",
+						"field": "your-email",
+						"error": "This field has a too long input.",
+						"threshold": "400"
+					},
+					{
+						"rule": "required",
+						"field": "your-subject",
+						"error": "Please fill out this field."
+					},
+					{
+						"rule": "maxlength",
+						"field": "your-subject",
+						"error": "This field has a too long input.",
+						"threshold": "400"
+					},
+					{
+						"rule": "maxlength",
+						"field": "your-message",
+						"error": "This field has a too long input.",
+						"threshold": "2000"
+					}
+				]
+			}
+		},
+		"71": {
+			"title": "Avto 2000 — ask about a car",
+			"tags": [
+				{
+					"name": "your-name",
+					"basetype": "text",
+					"required": true,
+					"values": [],
+					"include_blank": false
+				},
+				{
+					"name": "your-phone",
+					"basetype": "tel",
+					"required": true,
+					"values": [],
+					"include_blank": false
+				},
+				{
+					"name": "your-email",
+					"basetype": "email",
+					"required": true,
+					"values": [],
+					"include_blank": false
+				},
+				{
+					"name": "your-car",
+					"basetype": "select",
+					"required": false,
+					"values": [
+						"Škoda Octavia Combi",
+						"Toyota RAV4",
+						"Renault Clio",
+						"Volkswagen Golf",
+						"BMW 320d Touring",
+						"Peugeot 3008",
+						"Something else"
+					],
+					"include_blank": true
+				},
+				{
+					"name": "your-message",
+					"basetype": "textarea",
+					"required": false,
+					"values": [],
+					"include_blank": false
+				}
+			],
+			"messages": {
+				"mail_sent_ok": "Thanks, your question is on its way. We reply the same working day.",
+				"mail_sent_ng": "The message could not be sent. Call us on +386 1 200 2000 instead.",
+				"validation_error": "Some fields need attention. Check the highlighted ones and send again.",
+				"spam": "There was an error trying to send your message. Please try again later.",
+				"accept_terms": "You must accept the terms and conditions before sending your message.",
+				"invalid_required": "Fill in this field.",
+				"invalid_too_long": "This field has a too long input.",
+				"invalid_too_short": "This field has a too short input.",
+				"upload_failed": "There was an unknown error uploading the file.",
+				"upload_file_type_invalid": "You are not allowed to upload files of this type.",
+				"upload_file_too_large": "The uploaded file is too large.",
+				"upload_failed_php_error": "There was an error uploading the file.",
+				"invalid_date": "Please enter a date in YYYY-MM-DD format.",
+				"date_too_early": "This field has a too early date.",
+				"date_too_late": "This field has a too late date.",
+				"invalid_number": "Please enter a number.",
+				"number_too_small": "This field has a too small number.",
+				"number_too_large": "This field has a too large number.",
+				"quiz_answer_not_correct": "The answer to the quiz is incorrect.",
+				"captcha_not_match": "Your entered code is incorrect.",
+				"invalid_email": "Enter an e-mail address like name@example.com.",
+				"invalid_url": "Please enter a URL.",
+				"invalid_tel": "Enter a phone number, digits and + only."
+			},
+			"mail": {
+				"active": true,
+				"subject": "[Avto 2000 test] Question about: [your-car]",
+				"sender": "Avto 2000 <wordpress@avto2000-elementor.test>",
+				"recipient": "aljaz.polh55@gmail.com",
+				"body": "Name: [your-name]\nPhone: [your-phone]\nE-mail: [your-email]\nCar: [your-car]\n\n[your-message]\n\n-- \nSent from the Contact Form 7 test form on [_site_url]",
+				"additional_headers": "Reply-To: [your-email]",
+				"attachments": "",
+				"use_html": false,
+				"exclude_blank": false
+			},
+			"schema": {
+				"version": "SWV Core 2026-09-20",
+				"locale": "en_US",
+				"rules": [
+					{
+						"rule": "required",
+						"field": "your-name",
+						"error": "Fill in this field."
+					},
+					{
+						"rule": "maxlength",
+						"field": "your-name",
+						"error": "This field has a too long input.",
+						"threshold": "400"
+					},
+					{
+						"rule": "required",
+						"field": "your-phone",
+						"error": "Fill in this field."
+					},
+					{
+						"rule": "tel",
+						"field": "your-phone",
+						"error": "Enter a phone number, digits and + only."
+					},
+					{
+						"rule": "maxlength",
+						"field": "your-phone",
+						"error": "This field has a too long input.",
+						"threshold": "400"
+					},
+					{
+						"rule": "required",
+						"field": "your-email",
+						"error": "Fill in this field."
+					},
+					{
+						"rule": "email",
+						"field": "your-email",
+						"error": "Enter an e-mail address like name@example.com."
+					},
+					{
+						"rule": "maxlength",
+						"field": "your-email",
+						"error": "This field has a too long input.",
+						"threshold": "400"
+					},
+					{
+						"rule": "maxlength",
+						"field": "your-message",
+						"error": "This field has a too long input.",
+						"threshold": "2000"
+					},
+					{
+						"rule": "enum",
+						"field": "your-car",
+						"error": "Undefined value was submitted through this field.",
+						"accept": [
+							"Škoda Octavia Combi",
+							"Toyota RAV4",
+							"Renault Clio",
+							"Volkswagen Golf",
+							"BMW 320d Touring",
+							"Peugeot 3008",
+							"Something else"
+						]
+					}
+				]
+			}
+		}
+	},
+	"elementor": {
+		"0bbcf0f": {
+			"post_id": 20,
+			"name": "Test drive (Elementor test form)",
+			"fields": [
+				{
+					"id": "name",
+					"type": "text",
+					"label": "Your name",
+					"required": true,
+					"options": []
+				},
+				{
+					"id": "phone",
+					"type": "tel",
+					"label": "Phone",
+					"required": true,
+					"options": []
+				},
+				{
+					"id": "email",
+					"type": "email",
+					"label": "E-mail",
+					"required": true,
+					"options": []
+				},
+				{
+					"id": "car",
+					"type": "select",
+					"label": "Which car?",
+					"required": true,
+					"options": [
+						"|",
+						"Škoda Octavia Combi",
+						"Toyota RAV4",
+						"Renault Clio",
+						"Volkswagen Golf",
+						"BMW 320d Touring",
+						"Peugeot 3008"
+					]
+				},
+				{
+					"id": "date",
+					"type": "date",
+					"label": "Preferred day",
+					"required": false,
+					"options": []
+				},
+				{
+					"id": "time",
+					"type": "select",
+					"label": "Time of day",
+					"required": false,
+					"options": [
+						"Morning",
+						"Afternoon"
+					]
+				}
+			],
+			"actions": [
+				"save-to-database",
+				"email"
+			],
+			"email": {
+				"to": "aljaz.polh55@gmail.com",
+				"subject": "[Avto 2000 test] Test drive request",
+				"content": "[all-fields]",
+				"reply_to": "email",
+				"from_name": "Avto 2000"
+			},
+			"messages": {
+				"success": "Thanks, your test drive request is in. We will call you to confirm the time.",
+				"error": "The request could not be sent. Call us on +386 1 200 2000 instead.",
+				"required": "Fill in this field.",
+				"invalid": "Check this field and try again."
+			}
+		}
+	}
+}

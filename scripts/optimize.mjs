@@ -230,6 +230,9 @@ export async function optimizeHtml(html, { OUT, WP_ROOT, font }) {
 		html = html.replace('</head>', `<style id="hero-responsive">${overrides.join('')}</style></head>`);
 	}
 
+	/* Cloudflare Zaraz is injected by Cloudflare itself (Zaraz → Settings → Auto-inject)
+	 * for browser requests, Worker responses included. Do NOT add /cdn-cgi/zaraz/i.js
+	 * here as well: two loaders log "zaraz is loaded twice" (Best Practices 96). */
 	html = html.replace(/<head>/, `<head>${preloads.join('')}${head.join('')}`);
 
 	// charset must stay within the first 1024 bytes: hoist it back to the top

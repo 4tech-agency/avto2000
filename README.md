@@ -25,3 +25,11 @@ success. For real mail set `MAIL_MODE=send` plus either the `send_email` binding
 `RESEND_API_KEY` secret.
 
 **Never commit `ssh/`** — it holds the cPanel key; `.gitignore` covers it.
+
+**Tracking + consent: Cloudflare Zaraz** (zone avto2000.com). GA4 `G-0862S1CMF4` runs
+server-side through Zaraz, only after the visitor accepts "Analytics" in Zaraz's consent
+window (styled by `zaraz/consent.css`; footer "Cookie settings" reopens it). Site events
+come from the WordPress snippet "Zaraz — conversion events" via `zaraz.track()`:
+`generate_lead` (CF7 + Elementor form, with `car`, `form_tool`), `phone_click`, `email_click`.
+Config lives in `zaraz/config.json`; apply with `./zaraz/apply.sh`. Cloudflare injects the
+Zaraz loader itself — never add `/cdn-cgi/zaraz/i.js` to the pages.

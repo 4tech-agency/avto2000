@@ -1,0 +1,35 @@
+/* Zaraz consent window in the Avto 2000 design. Lives inside Zaraz's shadow DOM;
+   the Elementor kit's custom properties inherit into it, hex values are fallbacks.
+   !important: Zaraz's own sheet includes a prefers-color-scheme: dark variant. */
+dialog::backdrop { background-color: rgba(20, 32, 43, .5) !important; backdrop-filter: none !important; }
+.cf_modal {
+  --ink: var(--e-global-color-primary, #14202B);
+  --muted: var(--e-global-color-secondary, #4B5966);
+  --line: var(--e-global-color-line, #D5DEE6);
+  --surface: var(--e-global-color-surface, #FFFFFF);
+  --wash: var(--e-global-color-bg, #F3F6F9);
+  --padding: 28px !important;
+  font-family: "Archivo", "Archivo Fallback", Arial, sans-serif !important;
+  color: var(--ink) !important; background-color: var(--surface) !important;
+  border: 1px solid var(--line) !important; border-radius: 8px !important;
+  max-width: 520px !important; filter: none !important;
+}
+#cf_modal_title { color: var(--ink) !important; font-size: 22px !important; font-weight: 800 !important;
+  letter-spacing: -.02em !important; line-height: 1.2 !important; margin: 0 !important; }
+.cf_consent-intro, .cf_consent-intro p, label, li { color: var(--ink) !important; font-size: 16px !important; line-height: 1.55 !important; }
+.cf_consent-intro strong { font-weight: 700 !important; }
+label { color: var(--muted) !important; font-size: 15px !important; }
+h3 { color: var(--ink) !important; font-size: 16px !important; font-weight: 700 !important; margin: 0 0 4px !important; }
+hr { border: 0 !important; border-top: 1px solid var(--line) !important; }
+.cf-checkbox { accent-color: var(--ink); width: 20px !important; height: 20px !important; }
+.cf_consent-buttons { background-color: var(--wash) !important; border-top: 1px solid var(--line) !important;
+  gap: 12px !important; padding: 16px var(--padding) !important; justify-content: flex-start !important; }
+.cf_button { font: inherit !important; font-size: 16px !important; font-weight: 600 !important; line-height: 1.2 !important;
+  min-height: 44px !important; padding: 10px 18px !important; margin: 0 !important; border-radius: 6px !important;
+  border: 2px solid var(--ink) !important; cursor: pointer !important; transition: background-color .18s ease-out, color .18s ease-out !important; }
+.cf_button--accept, .cf_button--reject { background-color: var(--ink) !important; color: var(--surface) !important; }
+.cf_button--save { background-color: var(--surface) !important; color: var(--ink) !important; }
+.cf_button:hover { background-color: var(--muted) !important; border-color: var(--muted) !important; color: var(--surface) !important; }
+.cf_button:focus-visible, .cf-checkbox:focus-visible { outline: 3px solid var(--ink) !important; outline-offset: 2px !important; }
+@media (max-width: 480px) { .cf_button { flex: 1 1 100% !important; } }
+@media (prefers-reduced-motion: reduce) { .cf_button { transition: none !important; } }

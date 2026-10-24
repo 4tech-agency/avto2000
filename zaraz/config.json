@@ -1,0 +1,201 @@
+{
+  "dataLayer": true,
+  "debugKey": "__FROM_LIVE__",
+  "dlp": [],
+  "historyChange": true,
+  "settings": {
+    "autoInjectScript": true
+  },
+  "tools": {
+    "ga4avto": {
+      "type": "component",
+      "component": "google-analytics-4",
+      "name": "Google Analytics 4",
+      "enabled": true,
+      "permissions": [
+        "access_client_kv",
+        "server_network_requests",
+        "client_network_requests"
+      ],
+      "settings": {
+        "tid": "G-0862S1CMF4",
+        "hideOriginalIP": true
+      },
+      "defaultFields": {},
+      "blockingTriggers": [],
+      "defaultPurpose": "analytics",
+      "vendorName": "Google",
+      "vendorPolicyUrl": "https://policies.google.com/privacy",
+      "actions": {
+        "pageview": {
+          "actionType": "pageview",
+          "firingTriggers": [
+            "Pageview"
+          ],
+          "blockingTriggers": [],
+          "data": {
+            "__zaraz_setting_name": "Page view"
+          }
+        },
+        "lead": {
+          "actionType": "event",
+          "firingTriggers": [
+            "trgLead"
+          ],
+          "blockingTriggers": [],
+          "data": {
+            "__zaraz_setting_name": "generate_lead",
+            "en": "generate_lead",
+            "form_name": "{{ client.form_name }}",
+            "form_tool": "{{ client.form_tool }}",
+            "car": "{{ client.car }}"
+          }
+        },
+        "phone": {
+          "actionType": "event",
+          "firingTriggers": [
+            "trgPhone"
+          ],
+          "blockingTriggers": [],
+          "data": {
+            "__zaraz_setting_name": "phone_click",
+            "en": "phone_click",
+            "link_url": "{{ client.link_url }}",
+            "link_text": "{{ client.link_text }}"
+          }
+        },
+        "email": {
+          "actionType": "event",
+          "firingTriggers": [
+            "trgEmail"
+          ],
+          "blockingTriggers": [],
+          "data": {
+            "__zaraz_setting_name": "email_click",
+            "en": "email_click",
+            "link_url": "{{ client.link_url }}",
+            "link_text": "{{ client.link_text }}"
+          }
+        }
+      }
+    }
+  },
+  "triggers": {
+    "AllTracks": {
+      "description": "All zaraz.track() calls",
+      "excludeRules": [],
+      "loadRules": [
+        {
+          "id": "rul1",
+          "match": "{{ client.__zarazTrack }}",
+          "op": "NOT_MATCH_REGEX",
+          "value": "^__zaraz.*"
+        },
+        {
+          "id": "rul2",
+          "match": "{{ client.__zarazEcommerce }}",
+          "op": "NOT_MATCH_REGEX",
+          "value": "true"
+        },
+        {
+          "id": "pgv2",
+          "match": "{{ client.__zarazTrack }}",
+          "op": "NOT_MATCH_REGEX",
+          "value": "^Pageview$"
+        }
+      ],
+      "name": "All Tracks"
+    },
+    "Pageview": {
+      "clientRules": [],
+      "description": "All page loads",
+      "excludeRules": [],
+      "loadRules": [
+        {
+          "match": "{{ client.__zarazTrack }}",
+          "op": "EQUALS",
+          "value": "Pageview"
+        }
+      ],
+      "name": "Pageview",
+      "system": "pageload"
+    },
+    "trgLead": {
+      "name": "generate_lead",
+      "description": "zaraz.track('generate_lead') from the site's events snippet",
+      "loadRules": [
+        {
+          "id": "rLead",
+          "match": "{{ client.__zarazTrack }}",
+          "op": "EQUALS",
+          "value": "generate_lead"
+        }
+      ],
+      "excludeRules": []
+    },
+    "trgPhone": {
+      "name": "phone_click",
+      "description": "zaraz.track('phone_click') from the site's events snippet",
+      "loadRules": [
+        {
+          "id": "rPhone",
+          "match": "{{ client.__zarazTrack }}",
+          "op": "EQUALS",
+          "value": "phone_click"
+        }
+      ],
+      "excludeRules": []
+    },
+    "trgEmail": {
+      "name": "email_click",
+      "description": "zaraz.track('email_click') from the site's events snippet",
+      "loadRules": [
+        {
+          "id": "rEmail",
+          "match": "{{ client.__zarazTrack }}",
+          "op": "EQUALS",
+          "value": "email_click"
+        }
+      ],
+      "excludeRules": []
+    }
+  },
+  "variables": {},
+  "zarazVersion": "__FROM_LIVE__",
+  "consent": {
+    "enabled": true,
+    "defaultLanguage": "en",
+    "cookieName": "cf_consent",
+    "hideModal": false,
+    "tcfCompliant": false,
+    "customIntroDisclaimerDismissed": true,
+    "companyName": "Avto 2000",
+    "companyEmail": "info@4tech.si",
+    "consentModalIntroHTMLWithTranslations": {
+      "en": "<p>We would like to count visits and enquiries with Google Analytics, to see which cars and pages people look at. Nothing is measured until you accept. You can change your choice any time with <strong>Cookie settings</strong> at the bottom of every page.</p>"
+    },
+    "purposesWithTranslations": {
+      "analytics": {
+        "order": 0,
+        "name": {
+          "en": "Analytics"
+        },
+        "description": {
+          "en": "Google Analytics 4: page views, form enquiries and phone or e-mail clicks. IP addresses are not passed to Google."
+        }
+      }
+    },
+    "buttonTextTranslations": {
+      "accept_all": {
+        "en": "Accept all"
+      },
+      "reject_all": {
+        "en": "Reject all"
+      },
+      "confirm_my_choices": {
+        "en": "Save my choices"
+      }
+    },
+    "customCSS": "__FROM_FILE__ zaraz/consent.css"
+  }
+}

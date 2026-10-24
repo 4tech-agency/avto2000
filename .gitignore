@@ -12,3 +12,6 @@ node_modules/
 
 # original 2–3 MB generator PNGs; the site uses the WebP/SVG exports
 assets/img/*.png
+
+# visual-regression screenshots
+.shots/

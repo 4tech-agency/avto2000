@@ -110,7 +110,9 @@ button:focus-visible {
 /* Hello's reset turns every [type=submit] magenta on hover; restore ours */
 .av-cf7 .av-cf7-submit:hover, .av-cf7 .av-cf7-submit:focus { background: var(--e-global-color-secondary); color: var(--e-global-color-surface); }
 .av-cf7 .wpcf7-spinner { margin: 8px 0 0; }
-.av-cf7 .wpcf7-not-valid { border-color: #B42318; }
+/* tag-qualified: the base `.av-cf7 input:not([type=submit])` rule (0-2-1) beat a
+ * plain `.av-cf7 .wpcf7-not-valid` (0-2-0), so invalid fields kept the grey border */
+.av-cf7 input.wpcf7-not-valid, .av-cf7 select.wpcf7-not-valid, .av-cf7 textarea.wpcf7-not-valid { border-color: #B42318; }
 .av-cf7 .wpcf7-not-valid-tip { margin-top: 6px; font-size: 14px; font-weight: 600; color: #B42318; }
 .av-cf7 .wpcf7-response-output { margin: 16px 0 0 !important; padding: 12px 14px !important; border-radius: 6px; font-size: 15px; }
 

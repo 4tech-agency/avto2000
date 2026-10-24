@@ -13,7 +13,8 @@
  *  5. Images: correct `sizes` for car cards, lazy-load everything below the hero.
  *  6. Drop the leftover emoji loader.
  */
-import { readFile, writeFile, mkdir, copyFile, stat } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, copyFile, stat, readdir } from 'node:fs/promises';
+import { PurgeCSS } from 'purgecss';
 import { dirname, join, posix } from 'node:path';
 
 const CHROME_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36';
@@ -52,7 +53,11 @@ function minify(css) {
 	return css
 		.replace(/\/\*[\s\S]*?\*\//g, '')
 		.replace(/\s+/g, ' ')
-		.replace(/\s*([{}:;,>])\s*/g, '$1')
+		/* never touch the space BEFORE a colon: in a selector it is the descendant
+		 * combinator (`.card :is(a,b)` ≠ `.card:is(a,b)`); collapsing it silently
+		 * broke the map facade's height rule */
+		.replace(/\s*([{};,>])\s*/g, '$1')
+		.replace(/:\s+/g, ':')
 		.replace(/;}/g, '}')
 		.trim();
 }
@@ -74,12 +79,65 @@ async function variants(WP_ROOT, src) {
 	const out = [];
 	for (const w of [768, 1024, 1536, 2048]) {
 		const dir = join(WP_ROOT, posix.dirname(src));
-		const { readdir } = await import('node:fs/promises');
 		const base = posix.basename(m[1]);
 		const hit = (await readdir(dir)).find((f) => f.startsWith(`${base}-${w}x`) && f.endsWith(`.${m[2]}`));
 		if (hit) out.push({ w, path: `${posix.dirname(src)}/${hit}` });
 	}
 	return out;
+}
+
+/* -------------------------------------------------------------- purge -- */
+/* Classes that only ever appear after JavaScript runs (menu, sticky header, form
+ * states, lazy backgrounds). The page's own scripts are passed to PurgeCSS as content
+ * too, so most are found automatically; these patterns are the safety net. */
+const SAFELIST = {
+	standard: [/^e-lazyloaded$/, /^highlighted$/, /^sub-arrow$/, /^has-submenu$/, /^screen-reader-text$/,
+		/^sent$/, /^invalid$/, /^failed$/, /^spam$/, /^submitting$/, /^unaccepted$/, /^aborted$/, /^resetting$/],
+	greedy: [/elementor-sticky/, /elementor-active/, /elementor-item-active/, /elementor-menu-toggle/,
+		/elementor-nav-menu/, /elementor-message/, /elementor-error/, /elementor-form-waiting/,
+		/elementor-help-inline/, /wpcf7/, /^av-/, /\[/,
+		/* the map facade's height rule is `:is(iframe,.av-map)`: the iframe only exists
+		 * after "Show map", and PurgeCSS dropped the whole rule (facade lost 480px) */
+		/av-map/, /iframe/, /google_maps/],
+};
+/* scripts whose class names count as "used": everything the page loads, plus the
+ * Elementor bundles it loads on demand (menu, forms) */
+async function scriptContent(html, OUT) {
+	const files = new Set();
+	for (const m of html.matchAll(/<script[^>]+src=["'](\/[^"'?]+)/g)) files.add(m[1]);
+	for (const dir of ['wp-content/plugins/elementor-pro/assets/js', 'wp-content/plugins/elementor/assets/js/chunks']) {
+		try {
+			for (const f of await readdir(join(OUT, dir))) {
+				if (/^(nav-menu|form|text-editor)[.-].*\.min\.js$/.test(f)) files.add(`/${dir}/${f}`);
+			}
+		} catch {}
+	}
+	const out = [];
+	for (const f of files) {
+		try { out.push({ raw: await readFile(join(OUT, f), 'utf8'), extension: 'js' }); } catch {}
+	}
+	for (const m of html.matchAll(/src="data:text\/javascript;base64,([^"]+)"/g)) {
+		out.push({ raw: Buffer.from(m[1], 'base64').toString('utf8'), extension: 'js' });
+	}
+	return out;
+}
+async function purgeStyles(html, OUT) {
+	const scripts = await scriptContent(html, OUT);
+	/* the markup WITHOUT the inlined CSS: otherwise every class name is "found" in
+	 * the stylesheets themselves and nothing is ever removed */
+	const markup = html.replace(/<style[^>]*>[\s\S]*?<\/style>/g, '');
+	const blocks = [...html.matchAll(/<style([^>]*)>([\s\S]*?)<\/style>/g)];
+	for (const [whole, attrs, css] of blocks) {
+		if (/id=["'](?:fonts-inline|hero-responsive|av-map)["']/.test(attrs) || css.length < 2000) continue;
+		const [res] = await new PurgeCSS().purge({
+			content: [{ raw: markup, extension: 'html' }, ...scripts],
+			css: [{ raw: css }],
+			safelist: SAFELIST,
+			keyframes: true, fontFace: true, variables: false,
+		});
+		html = html.replace(whole, `<style${attrs}>${minify(res.css)}</style>`);
+	}
+	return html;
 }
 
 /* ----------------------------------------------------------------- page -- */
@@ -217,11 +275,16 @@ export async function optimizeHtml(html, { OUT, WP_ROOT, font }) {
 		}
 		if (phone) {
 			overrides.push(`@media (max-width:767px){${selector}{background-image:url(${phone.path})}}`);
-			preloads.push(`<link rel="preload" as="image" href="${phone.path}" media="(max-width: 767px)" fetchpriority="high">`);
+			/* media up to 1024px, not 767px: Lighthouse's emulated phone starts with a
+			 * tablet-width window, so a phone-only preload never matched there and the
+			 * hero was found late via CSS. Real tablets fetch this 33 KB copy as well. */
+			preloads.push(`<link rel="preload" as="image" href="${phone.path}" media="(max-width: 1024px)" fetchpriority="high">`);
 		}
 		if (tablet) {
+			/* no preload for tablets: Lighthouse's emulated phone briefly has a tablet-width
+			 * window at startup, matched this preload and downloaded 50 KB extra in the
+			 * middle of the LCP. Tablets still get this size from the CSS rule. */
 			overrides.push(`@media (min-width:768px) and (max-width:1024px){${selector}{background-image:url(${tablet.path})}}`);
-			preloads.push(`<link rel="preload" as="image" href="${tablet.path}" media="(min-width: 768px) and (max-width: 1024px)" fetchpriority="high">`);
 		}
 		preloads.push(`<link rel="preload" as="image" href="${src}" media="(min-width: 1025px)" fetchpriority="high">`);
 	}
@@ -280,9 +343,15 @@ export async function optimizeHtml(html, { OUT, WP_ROOT, font }) {
 			img = img.replace(/\sloading=["']lazy["']/, '');
 			return first ? img : img.replace(/\sfetchpriority=["']high["']/, '');
 		}
+		/* below the hero: lazy AND low priority, so a lazy image Chrome decides to fetch
+		 * early (it fetches those near the viewport) never competes with the LCP image */
 		img = img.replace(/\sfetchpriority=["']high["']/, '');
-		return /\sloading=/.test(img) ? img : img.replace('<img', '<img loading="lazy"');
+		if (!/\sloading=/.test(img)) img = img.replace('<img', '<img loading="lazy"');
+		return /\sfetchpriority=/.test(img) ? img : img.replace('<img', '<img fetchpriority="low"');
 	});
+
+	// 7. drop CSS rules nothing on this page (or its scripts) can match
+	html = await purgeStyles(html, OUT);
 
 	return html;
 }

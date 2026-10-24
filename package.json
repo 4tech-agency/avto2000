@@ -11,7 +11,8 @@
     "logs": "env -u CLOUDFLARE_API_TOKEN -u CLOUDFLARE_ACCOUNT_ID wrangler tail"
   },
   "devDependencies": {
+    "purgecss": "^6.0.0",
     "wrangler": "^4"
   },
-  "//": "wrangler runs with CLOUDFLARE_API_TOKEN unset: the shell's token belongs to another account (Beloved). This project uses the OAuth login for account 522efa6a\u2026"
+  "//": "wrangler runs with CLOUDFLARE_API_TOKEN unset: the shell's token belongs to another account (Beloved). This project uses the OAuth login for account 522efa6a…"
 }

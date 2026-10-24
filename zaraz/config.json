@@ -172,7 +172,7 @@
     "companyName": "Avto 2000",
     "companyEmail": "info@4tech.si",
     "consentModalIntroHTMLWithTranslations": {
-      "en": "<p>We’d like to count visits and enquiries with Google Analytics. Nothing is measured until you accept, and you can change this under <strong>Cookie settings</strong> in the footer.</p>"
+      "en": "<p>We’d like to count visits with Google Analytics, only if you accept. Change it any time under <strong>Cookie settings</strong> in the footer.</p>"
     },
     "purposesWithTranslations": {
       "analytics": {

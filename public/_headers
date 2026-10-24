@@ -4,7 +4,10 @@
   X-Frame-Options: SAMEORIGIN
 
 /wp-content/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=31536000, immutable
 
 /wp-includes/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable

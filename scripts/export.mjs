@@ -15,9 +15,10 @@
  * Output: public/ (static assets) and src/forms.generated.json.
  */
 import { execFileSync } from 'node:child_process';
-import { mkdir, rm, writeFile, readdir, copyFile, stat } from 'node:fs/promises';
+import { mkdir, rm, writeFile, readFile, readdir, copyFile, stat } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { selfHostFonts, optimizeHtml } from './optimize.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (name, def) => {
@@ -179,6 +180,14 @@ await copyDir('wp-content/plugins/elementor/assets/css', (n) => n.endsWith('.min
 await copyDir('wp-content/plugins/elementor-pro/assets/css', (n) => n.endsWith('.min.css'));
 await copyDir('wp-content/plugins/elementor/assets/lib', (n) => /\.(min\.js|min\.css|woff2?|ttf|svg|png|gif)$/.test(n));
 
+// performance pass over every exported page (see scripts/optimize.mjs)
+const font = await selfHostFonts(OUT);
+for (const f of [...pages.map((p) => (p === '/' ? 'index.html' : `${p.replace(/^\/|\/$/g, '')}/index.html`)), '404.html']) {
+	const file = join(OUT, f);
+	await writeFile(file, await optimizeHtml(await readFile(file, 'utf8'), { OUT, WP_ROOT, font }));
+}
+console.log('  optimized: inlined CSS, self-hosted font, hero preload, deferred jQuery');
+
 // cache + security headers for Workers static assets
 await save('_headers', `/*
   X-Content-Type-Options: nosniff
@@ -186,10 +195,13 @@ await save('_headers', `/*
   X-Frame-Options: SAMEORIGIN
 
 /wp-content/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=31536000, immutable
 
 /wp-includes/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
 `);
 
 // form definitions for the Worker

@@ -172,7 +172,7 @@
     "companyName": "Avto 2000",
     "companyEmail": "info@4tech.si",
     "consentModalIntroHTMLWithTranslations": {
-      "en": "<p>We would like to count visits and enquiries with Google Analytics, to see which cars and pages people look at. Nothing is measured until you accept. You can change your choice any time with <strong>Cookie settings</strong> at the bottom of every page.</p>"
+      "en": "<p>We’d like to count visits and enquiries with Google Analytics. Nothing is measured until you accept, and you can change this under <strong>Cookie settings</strong> in the footer.</p>"
     },
     "purposesWithTranslations": {
       "analytics": {
@@ -181,7 +181,7 @@
           "en": "Analytics"
         },
         "description": {
-          "en": "Google Analytics 4: page views, form enquiries and phone or e-mail clicks. IP addresses are not passed to Google."
+          "en": "Page views, enquiries and phone clicks. No IP address is sent to Google."
         }
       }
     },

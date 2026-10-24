@@ -1,26 +1,39 @@
 /* Zaraz consent window in the Avto 2000 design. Lives inside Zaraz's shadow DOM;
    the Elementor kit's custom properties inherit into it, hex values are fallbacks.
    !important: Zaraz's own sheet includes a prefers-color-scheme: dark variant. */
-dialog::backdrop { background-color: rgba(20, 32, 43, .5) !important; backdrop-filter: none !important; }
+/* Bottom banner, not a centred modal: no dimming backdrop, so when Zaraz opens it
+   late (after load) only a strip at the bottom changes. A full-screen dimmed modal
+   repainted the whole viewport at the end of the load: Speed Index 4.2 s and a late
+   LCP candidate in PageSpeed Insights. */
+dialog::backdrop { background-color: transparent !important; backdrop-filter: none !important; }
 .cf_modal {
   --ink: var(--e-global-color-primary, #14202B);
   --muted: var(--e-global-color-secondary, #4B5966);
   --line: var(--e-global-color-line, #D5DEE6);
   --surface: var(--e-global-color-surface, #FFFFFF);
   --wash: var(--e-global-color-bg, #F3F6F9);
-  --padding: 28px !important;
+  --padding: 20px !important;
   font-family: "Archivo", "Archivo Fallback", Arial, sans-serif !important;
   color: var(--ink) !important; background-color: var(--surface) !important;
   border: 1px solid var(--line) !important; border-radius: 8px !important;
-  max-width: 520px !important; filter: none !important;
+  max-width: 440px !important; width: calc(100vw - 32px) !important; max-height: 70vh !important;
+  margin: 0 !important; inset: auto 16px 16px auto !important;
+  box-shadow: 0 8px 24px rgba(20, 32, 43, .18) !important; filter: none !important;
 }
-#cf_modal_title { color: var(--ink) !important; font-size: 22px !important; font-weight: 800 !important;
+@media (max-width: 600px) {
+  .cf_modal { width: 100vw !important; max-width: none !important; inset: auto 0 0 0 !important;
+    border-radius: 12px 12px 0 0 !important; border-width: 1px 0 0 0 !important; max-height: 75vh !important; }
+}
+#cf_modal_title { color: var(--ink) !important; font-size: 18px !important; font-weight: 800 !important;
   letter-spacing: -.02em !important; line-height: 1.2 !important; margin: 0 !important; }
-.cf_consent-intro, .cf_consent-intro p, label, li { color: var(--ink) !important; font-size: 16px !important; line-height: 1.55 !important; }
+.cf_consent-intro, .cf_consent-intro p, label, li { color: var(--ink) !important; font-size: 14px !important; line-height: 1.5 !important; }
+.title_container { margin-bottom: 8px !important; }
+.cf_consent-intro p { margin: 0 0 10px !important; }
 .cf_consent-intro strong { font-weight: 700 !important; }
-label { color: var(--muted) !important; font-size: 15px !important; }
-h3 { color: var(--ink) !important; font-size: 16px !important; font-weight: 700 !important; margin: 0 0 4px !important; }
-hr { border: 0 !important; border-top: 1px solid var(--line) !important; }
+label { color: var(--muted) !important; font-size: 13px !important; }
+h3 { color: var(--ink) !important; font-size: 15px !important; font-weight: 700 !important; margin: 0 0 4px !important; }
+hr { display: none !important; }
+.cf_consent-container { margin: 14px 0 14px !important; padding: 0 !important; }
 .cf-checkbox { accent-color: var(--ink); width: 20px !important; height: 20px !important; }
 .cf_consent-buttons { background-color: var(--wash) !important; border-top: 1px solid var(--line) !important;
   gap: 12px !important; padding: 16px var(--padding) !important; justify-content: flex-start !important; }
@@ -30,6 +43,9 @@ hr { border: 0 !important; border-top: 1px solid var(--line) !important; }
 .cf_button--accept, .cf_button--reject { background-color: var(--ink) !important; color: var(--surface) !important; }
 .cf_button--save { background-color: var(--surface) !important; color: var(--ink) !important; }
 .cf_button:hover { background-color: var(--muted) !important; border-color: var(--muted) !important; color: var(--surface) !important; }
-.cf_button:focus-visible, .cf-checkbox:focus-visible { outline: 3px solid var(--ink) !important; outline-offset: 2px !important; }
-@media (max-width: 480px) { .cf_button { flex: 1 1 100% !important; } }
+.cf_button:focus-visible { outline: 3px solid var(--ink) !important; outline-offset: 2px !important; }
+/* the dialog auto-focuses the checkbox on open; a 2px ring that fits its wrapper */
+.cf-checkbox:focus-visible { outline: 2px solid var(--ink) !important; outline-offset: 1px !important; }
+.cf_consent-element__checkbox-wrapper { overflow: visible !important; border: 0 !important; }
+@media (max-width: 480px) { .cf_button--accept, .cf_button--reject { flex: 1 1 0 !important; } .cf_button--save { flex: 1 1 100% !important; } }
 @media (prefers-reduced-motion: reduce) { .cf_button { transition: none !important; } }
